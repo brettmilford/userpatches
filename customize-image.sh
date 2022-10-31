@@ -20,6 +20,8 @@ BOARDFAMILY=$6
 BUILDBINARY=$7
 
 Main() {
+	set_platform
+
 	display_alert "ReARM.it customization script" "customize-image.sh" "Info"
 	display_alert "BOARD" "$BOARD" "Info"
 
@@ -110,7 +112,6 @@ clone_retropie() {
 } # clone_retropie
 
 install_retropie() {
-	platform="sun50i-h6"
 	if [ ! -z "$platform" ]; then
 		modules=(
 			'setup basic_install'
@@ -132,11 +133,20 @@ install_retropie() {
 } # install_retropie
 
 set_platform() {
-	case $BOARD in
+	case $BOARDFAMILY in
+		sun8i)
+			platform=sun8i-h3
+			;;
 		sun50iw6)
 			platform=sun50i-h6
 			;;
+		sun50iw9)
+			platform=sun50i-h616
+			;;
+		rk3399)
+			platform=rk3399
+			;;
 	esac
-} # set_platform
+}
 
 Main "$@"
