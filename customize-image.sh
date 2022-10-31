@@ -16,6 +16,8 @@ RELEASE=$1
 LINUXFAMILY=$2
 BOARD=$3
 BUILD_DESKTOP=$4
+BOARDFAMILY=$6
+BUILDBINARY=$7
 
 Main() {
 	display_alert "ReARM.it customization script" "customize-image.sh" "Info"
