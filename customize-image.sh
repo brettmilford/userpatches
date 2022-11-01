@@ -32,6 +32,9 @@ Main() {
 	display_alert "Configure uboot start..."
 	config_uboot
 
+	display_alert "Configure audio..."
+	config_audio
+
 	display_alert "Set host name..."
 	set_hostname
 
@@ -105,6 +108,50 @@ set_hostname() {
 config_uboot() {
 	sed -i 's/^bootlogo.*/bootlogo=true/' /boot/armbianEnv.txt || echo 'bootlogo=true' >> /boot/armbianEnv.txt
 } # config_uboot
+
+config_audio_h6() {
+	# create asound.conf
+	cat > /etc/asound.conf << _EOF_
+pcm.!default {
+  type plug
+  slave.pcm "dmixer"
+}
+
+pcm.dmixer  {
+  type dmix
+  ipc_key 1024
+  slave {
+    pcm "hw:0,0" # "hw:0,0" means HDMI change to "hw:0,0" for analog lineout jack output
+    period_time 0
+    period_size 1024
+    buffer_size 4096
+    rate 44100
+  }
+  bindings {
+    0 0
+    1 1
+  }
+}
+
+ctl.dmixer {
+  type hw
+  card 0
+}
+
+ctl.!default {
+    type hw
+    card 0
+}
+_EOF_
+}
+
+config_audio() {
+	case $BOARDFAMILY in
+		sun50iw6)
+			config_audio_h6
+			;;
+  	esac
+}	
 
 clone_retropie() {
 	git clone https://github.com/rearmit/RetroPie-Setup /home/pi/RetroPie-Setup
