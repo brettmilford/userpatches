@@ -10,11 +10,8 @@ fingerprint_image() {
 		Build date:     $(date +'%d.%m.%Y')
 		Builder rev:    $BUILD_REPOSITORY_COMMIT
 		Maintainer:     $MAINTAINER <$MAINTAINERMAIL>
-		Authors:        https://www.armbian.com/authors
-		Sources:        https://github.com/armbian/
-		Support:        https://forum.armbian.com/
-		Changelog:      https://www.armbian.com/logbook/
-		Documantation:  https://docs.armbian.com/
+		Authors:        http://rearm.it
+		Sources:        https://github.com/rearmit/
 	EOF
 
 	if [ -n "$2" ]; then
