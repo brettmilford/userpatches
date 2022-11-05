@@ -35,8 +35,8 @@ Main() {
 	display_alert "Configure audio..."
 	config_audio
 
-	display_alert "Set host name..."
-	set_hostname
+#	display_alert "Set host name..."
+#	set_hostname
 
 	display_alert "RetroPi installation start..."
 	clone_retropie
@@ -78,7 +78,7 @@ config_root_password() {
 	rm /root/.not_logged_in_yet
 
 	# assign rearm password to root user
-	echo root:rearm | chpasswd
+	# echo root:rearm | chpasswd
 } # config_root_password
 
 config_pi_user() {
