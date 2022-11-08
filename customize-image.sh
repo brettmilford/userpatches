@@ -32,8 +32,8 @@ Main() {
 	display_alert "Configure uboot start..."
 	config_uboot
 
-	display_alert "Configure audio..."
-	config_audio
+#	display_alert "Configure audio..."
+#	config_audio
 
 	display_alert "RetroPi installation start..."
 	clone_retropie
