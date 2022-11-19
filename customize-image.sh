@@ -19,6 +19,8 @@ BUILD_DESKTOP=$4
 BOARDFAMILY=$6
 BUILDBINARY=$7
 
+FILESYSTEM_SIZE="15500000s"
+
 Main() {
 	set_platform
 
@@ -32,15 +34,28 @@ Main() {
 	display_alert "Configure uboot start..."
 	config_uboot
 
-#	display_alert "Configure audio..."
-#	config_audio
-
 	display_alert "RetroPi installation start..."
 	clone_retropie
-
 	install_retropie
 
+#	set_filesystem_size
+
+	install_overlay
+
 } # Main
+
+install_overlay()
+{
+	cp -r /tmp/overlay/usr/ /
+
+	systemctl enable rearmit-video.service
+	systemctl enable rearmit-hdmi-audio.service
+}
+
+set_filesystem_size()
+{
+	echo $FILESYSTEM_SIZE > /root/.rootfs_resize
+} # set_filesystem_size
 
 display_alert()
 {
@@ -97,6 +112,10 @@ config_pi_user() {
 
 config_uboot() {
 	sed -i 's/^bootlogo.*/bootlogo=true/' /boot/armbianEnv.txt || echo 'bootlogo=true' >> /boot/armbianEnv.txt
+	sed -i 's/hdmi.audio=EDID:0 disp.screen0_output_mode=${disp_mode}/video=${disp_mode}/' /boot/boot.cmd
+	sed -i 's/1920x1080p60/1920x1080@60/' /boot/boot.cmd
+	echo '#disp_mode=1920x1080@60' >> /boot/armbianEnv.txt
+	mkimage -C none -A arm -T script -d /boot/boot.cmd /boot/boot.scr
 } # config_uboot
 
 config_audio() {

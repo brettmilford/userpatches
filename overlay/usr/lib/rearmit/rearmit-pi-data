@@ -1,0 +1,34 @@
+#!/bin/bash
+#
+# Copyright (c) Authors: http://rearm.it
+#
+# This file is licensed under the terms of the GNU General Public
+# License version 2. This program is licensed "as is" without any
+# warranty of any kind, whether express or implied.
+
+# Functions:
+#
+# limit_resolution_to_fullhd
+
+create_pi_data() {
+	TMP_DIR=$(mktemp -d)
+
+	mkfs -t ext4 /dev/mmcblk0p3
+	e2label /dev/mmcblk0p3 "pi_home"
+
+	UUID=$(blkid -s UUID -o value /dev/mmcblk0p3)
+
+	mount /dev/mmcblk0p3 $TMP_DIR
+	cp -rp /home/pi $TMP_DIR
+	mkdir $TMP_DIR/configs
+
+	echo "UUID=${UUID} /home/pi ext4 defaults,noatime,commit=600,errors=remount-ro 0 1" >> /etc/fstab;
+	echo "/home/pi/configs /opt/retropie/configs defaults,bind 0 0" >> /etc/fstab;
+} # create_pi_data
+
+case $1 in
+	*start*)
+		# limit resolution to fullhd
+		create_pi_data &
+		;;
+esac

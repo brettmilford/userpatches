@@ -1,0 +1,49 @@
+#!/bin/bash
+#
+# Copyright (c) Authors: http://rearm.it
+#
+# This file is licensed under the terms of the GNU General Public
+# License version 2. This program is licensed "as is" without any
+# warranty of any kind, whether express or implied.
+
+# Functions:
+#
+# limit_resolution_to_fullhd
+
+limit_resolution_to_fullhd() {
+
+	# check for /boot/orangepiEnv.txt existence
+	[ -f /boot/armbianEnv.txt ] || return
+
+	# cleanup. add LF. This prevents adding parameters to the same line
+	echo "" >> /boot/armbianEnv.txt;  sed -i '/^$/d;$G' /boot/armbianEnv.txt; sed -i '/^$/d;$G' /boot/armbianEnv.txt
+
+	# cleanup. remove empty lines in the middle
+	sed -i '/^$/d' /boot/armbianEnv.txt
+
+	# preserve old contents if existent
+	TMPFILE=$(mktemp /tmp/${0##*/}.XXXXXX)
+	trap "sleep 1 ; rm \"${TMPFILE}\" ; exit 0" 0 1 2 3 15
+	awk -F"=" '/^extraargs/ {print $2}' </boot/armbianEnv.txt | tr -d -c '[:graph:]' >${TMPFILE}
+
+	resolution=$(cat /sys/class/graphics/fb0/virtual_size)
+	width=${resolution%%,*}
+	if [ "${width}" -gt 1920 ]; then
+		sed -i 's/#disp_mode=1920x1080@60/disp_mode=1920x1080@60/' /boot/armbianEnv.txt
+		mkimage -C none -A arm -T script -d /boot/boot.cmd /boot/boot.scr
+
+		sed -i 's/# video_fullscreen_x = 0/video_fullscreen_x = 1920/' /opt/retropie/configs/all/retroarch.cfg
+		sed -i 's/# video_fullscreen_y = 0/video_fullscreen_y = 1080/' /opt/retropie/configs/all/retroarch.cfg
+		sed -i 's/# video_fullscreen = false/video_fullscreen = true/' /opt/retropie/configs/all/retroarch.cfg
+
+		reboot
+	fi
+
+} # limit_resolution_to_fullhd
+
+case $1 in
+	*start*)
+		# limit resolution to fullhd
+		limit_resolution_to_fullhd &
+		;;
+esac
