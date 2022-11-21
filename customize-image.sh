@@ -169,6 +169,7 @@ clone_retropie() {
 install_retropie() {
 	if [ ! -z "$platform" ]; then
 		modules=(
+			'mesa3d'
 			'setup basic_install'
 			'bluetooth depends'
 			'raspbiantools enable_modules'
@@ -176,7 +177,6 @@ install_retropie() {
 			'usbromservice'
 			'samba depends'
 			'samba install_shares'
-			'xpad'
 		)
 		for module in "${modules[@]}"; do
 			su -c "sudo -S __platform=${platform} __nodialog=1 /home/pi/RetroPie-Setup/retropie_packages.sh ${module}" - pi
