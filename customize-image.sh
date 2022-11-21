@@ -162,7 +162,7 @@ _EOF_
 } # config_audio
 
 clone_retropie() {
-	git clone https://github.com/rearmit/RetroPie-Setup /home/pi/RetroPie-Setup
+	git clone --recurse-submodules https://github.com/rearmit/RetroPie-Setup /home/pi/RetroPie-Setup
 	chown -R pi /home/pi/RetroPie-Setup
 } # clone_retropie
 
