@@ -86,7 +86,7 @@ display_alert()
 config_root_user() {
 	# remove armbian first login flag
 	rm /root/.not_logged_in_yet
-} # config_root_password
+} # config_root_user
 
 config_pi_user() {
 	# create pi user
@@ -109,52 +109,9 @@ config_pi_user() {
 } # config_pi_user
 
 config_uboot() {
-	sed -i 's/^bootlogo.*/bootlogo=true/' /boot/orangepiEnv.txt || echo 'bootlogo=true' >> /boot/orangepiEnv.txt
-	echo 'extraargs="hdmi.audio=EDID:0 disp.screen0_output_mode=HDMI-A-1:1920x1080@60e"' >> /boot/orangepiEnv.txt
+	sed -i 's/^bootlogo.*/bootlogo=true/' /boot/armbianEnv.txt || echo 'bootlogo=true' >> /boot/armbianEnv.txt
+	echo 'extraargs="hdmi.audio=EDID:0 disp.screen0_output_mode=HDMI-A-1:1920x1080@60e"' >> /boot/armbianEnv.txt
 }
-
-config_audio() {
-	local hw="1"
-	case $BOARDFAMILY in
-		sun50iw6)
-			hw="0"
-			;;
-  	esac
-
-	# create asound.conf
-	cat > /etc/asound.conf << _EOF_
-pcm.!default {
-  type plug
-  slave.pcm "dmixer"
-}
-
-pcm.dmixer  {
-  type dmix
-  ipc_key 1024
-  slave {
-    pcm "hw:$hw,0"
-    period_time 0
-    period_size 1024
-    buffer_size 4096
-    rate 44100
-  }
-  bindings {
-    0 0
-    1 1
-  }
-}
-
-ctl.dmixer {
-  type hw
-  card 0
-}
-
-ctl.!default {
-    type hw
-    card 0
-}
-_EOF_
-} # config_audio
 
 clone_retropie() {
 	git clone --recurse-submodules https://github.com/rearmit/RetroPie-Setup /home/pi/RetroPie-Setup
