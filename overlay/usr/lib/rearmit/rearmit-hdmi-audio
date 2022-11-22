@@ -14,10 +14,6 @@ set_hdmi_audio() {
 	local hw="0"
 	
 	if [ -z "`aplay -l | grep hdmi | grep 'card 0'`"  ]; then
-		hw="0"
-	fi
-
-	if [ -z "`aplay -l | grep hdmi | grep 'card 0'`"  ]; then
 		hw="1"
 	fi
 

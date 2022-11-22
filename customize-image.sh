@@ -48,7 +48,6 @@ install_overlay()
 {
 	cp -r /tmp/overlay/usr/ /
 
-	systemctl enable rearmit-video.service
 	systemctl enable rearmit-hdmi-audio.service
 }
 
@@ -111,12 +110,9 @@ config_pi_user() {
 } # config_pi_user
 
 config_uboot() {
-	sed -i 's/^bootlogo.*/bootlogo=true/' /boot/armbianEnv.txt || echo 'bootlogo=true' >> /boot/armbianEnv.txt
-	sed -i 's/hdmi.audio=EDID:0 disp.screen0_output_mode=${disp_mode}/video=${disp_mode}/' /boot/boot.cmd
-	sed -i 's/1920x1080p60/1920x1080@60/' /boot/boot.cmd
-	echo '#disp_mode=1920x1080@60' >> /boot/armbianEnv.txt
-	mkimage -C none -A arm -T script -d /boot/boot.cmd /boot/boot.scr
-} # config_uboot
+	sed -i 's/^bootlogo.*/bootlogo=true/' /boot/orangepiEnv.txt || echo 'bootlogo=true' >> /boot/orangepiEnv.txt
+	echo 'extraargs="hdmi.audio=EDID:0 disp.screen0_output_mode=HDMI-A-1:1920x1080@60e"' >> /boot/orangepiEnv.txt
+}
 
 config_audio() {
 	local hw="1"
