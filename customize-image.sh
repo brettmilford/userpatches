@@ -47,7 +47,6 @@ Main() {
 install_overlay()
 {
 	cp -r /tmp/overlay/usr/ /
-
 	systemctl enable rearmit-hdmi-audio.service
 }
 
