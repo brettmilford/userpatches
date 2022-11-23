@@ -121,7 +121,7 @@ clone_retropie() {
 install_retropie() {
 	if [ ! -z "$platform" ]; then
 		modules=(
-			'mesa3d'
+#			'mesa3d'
 			'setup basic_install'
 			'bluetooth depends'
 			'raspbiantools enable_modules'
