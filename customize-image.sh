@@ -110,7 +110,7 @@ config_pi_user() {
 
 config_uboot() {
 	sed -i 's/^bootlogo.*/bootlogo=true/' /boot/armbianEnv.txt || echo 'bootlogo=true' >> /boot/armbianEnv.txt
-	echo 'extraargs="hdmi.audio=EDID:0 disp.screen0_output_mode=HDMI-A-1:1920x1080@60e"' >> /boot/armbianEnv.txt
+	echo 'extraargs="video=1920x1080@60"' >> /boot/armbianEnv.txt
 }
 
 clone_retropie() {

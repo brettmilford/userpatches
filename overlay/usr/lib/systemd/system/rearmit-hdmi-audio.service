@@ -10,7 +10,7 @@ DefaultDependencies=no
 [Service]
 Type=oneshot
 RemainAfterExit=yes
-ExecStart=/usr/lib/rearmit/rearmit-hmi-audio start
+ExecStart=/usr/lib/rearmit/rearmit-hdmi-audio start
 TimeoutStartSec=2min
 
 [Install]
