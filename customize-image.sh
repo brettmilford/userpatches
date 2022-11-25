@@ -36,7 +36,7 @@ Main() {
 
 	display_alert "RetroPi installation start..."
 	clone_retropie
-	# install_retropie
+	install_retropie
 
 	# set_filesystem_size
 
