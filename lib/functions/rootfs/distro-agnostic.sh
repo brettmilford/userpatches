@@ -402,7 +402,9 @@ POST_INSTALL_KERNEL_DEBS
 	if [[ $BSPFREEZE == yes ]]; then
 		display_alert "Freezing Armbian packages" "$BOARD" "info"
 		chroot "${SDCARD}" /bin/bash -c "apt-mark hold ${CHOSEN_KERNEL} ${CHOSEN_KERNEL/image/headers} \
-		linux-u-boot-${BOARD}-${BRANCH} ${CHOSEN_KERNEL/image/dtb}" >> "${DEST}"/${LOG_SUBPATH}/install.log 2>&1
+		linux-u-boot-${BOARD}-${BRANCH} ${CHOSEN_KERNEL/image/dtb} \
+		armbian-bsp-cli-${BOARD}" >> "${DEST}"/${LOG_SUBPATH}/install.log 2>&1
+		echo ${BRANCH}
 	fi
 
 	# remove deb files
