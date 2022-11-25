@@ -31,14 +31,14 @@ Main() {
 	config_root_user
 	config_pi_user
 
-	display_alert "Configure uboot start..."
-	config_uboot
+	# display_alert "Configure uboot start..."
+	# config_uboot
 
 	display_alert "RetroPi installation start..."
 	clone_retropie
-	install_retropie
+	# install_retropie
 
-#	set_filesystem_size
+	# set_filesystem_size
 
 	install_overlay
 
@@ -109,8 +109,21 @@ config_pi_user() {
 } # config_pi_user
 
 config_uboot() {
-	sed -i 's/^bootlogo.*/bootlogo=true/' /boot/armbianEnv.txt || echo 'bootlogo=true' >> /boot/armbianEnv.txt
-	echo 'extraargs="video=1920x1080@60"' >> /boot/armbianEnv.txt
+	# sed -i 's/^bootlogo.*/bootlogo=true/' /boot/armbianEnv.txt || echo 'bootlogo=true' >> /boot/armbianEnv.txt
+	# echo 'extraargs="video=1920x1080@60"' >> /boot/armbianEnv.txt
+
+	case $BOARDFAMILY in
+		sun8i)
+			cp /tmp/overlay/boot/bootenv/sunxi.txt /boot/rearmitEnv.txt
+			cp /tmp/overlay/boot/bootscripts/boot-sunxi.cmd /boot/boot.cmd
+			;;
+		sun50iw6)
+			cp /tmp/overlay/boot/bootenv/sunxi.txt /boot/rearmitEnv.txt
+			cp /tmp/overlay/boot/bootscripts/boot-sun50i-next.cmd /boot/boot.cmd
+			;;
+	esac
+
+	mkimage -C none -A arm -T script -d /boot/boot.cmd /boot/boot.scr
 }
 
 clone_retropie() {
@@ -121,7 +134,7 @@ clone_retropie() {
 install_retropie() {
 	if [ ! -z "$platform" ]; then
 		modules=(
-#			'mesa3d'
+			# 'mesa3d'
 			'setup basic_install'
 			'bluetooth depends'
 			'raspbiantools enable_modules'
