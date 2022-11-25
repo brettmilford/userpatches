@@ -404,7 +404,6 @@ POST_INSTALL_KERNEL_DEBS
 		chroot "${SDCARD}" /bin/bash -c "apt-mark hold ${CHOSEN_KERNEL} ${CHOSEN_KERNEL/image/headers} \
 		linux-u-boot-${BOARD}-${BRANCH} ${CHOSEN_KERNEL/image/dtb} \
 		armbian-bsp-cli-${BOARD}" >> "${DEST}"/${LOG_SUBPATH}/install.log 2>&1
-		echo ${BRANCH}
 	fi
 
 	# remove deb files
