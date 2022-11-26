@@ -11,11 +11,7 @@
 # set_hdmi_audio
 
 set_hdmi_audio() {
-	local hw="0"
-	
-	if [ -z "`aplay -l | grep hdmi | grep 'card 0'`"  ]; then
-		hw="1"
-	fi
+	local hw=$(aplay -l | grep hdmi | awk -F \: '/,/{print $1}' | awk '{print $2}')
 
 	# create asound.conf
 	cat > /etc/asound.conf << _EOF_
