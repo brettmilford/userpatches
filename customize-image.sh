@@ -26,6 +26,7 @@ Main() {
 
 	display_alert "ReARM.it customization script" "customize-image.sh" "Info"
 	display_alert "BOARD" "$BOARD" "Info"
+	display_alert "BOARDFAMILY" "$BOARDFAMILY" "Info"
 
 	display_alert "User configuration start..."
 	config_root_user
@@ -127,7 +128,7 @@ config_uboot() {
 }
 
 clone_retropie() {
-	git clone --recurse-submodules https://github.com/rearmit/RetroPie-Setup /home/pi/RetroPie-Setup
+	git clone --recurse-submodules https://github.com/brettmilford/RetroPie-Setup /home/pi/RetroPie-Setup
 	chown -R pi /home/pi/RetroPie-Setup
 } # clone_retropie
 
@@ -165,6 +166,9 @@ set_platform() {
 			;;
 		rk3399)
 			platform=rk3399
+			;;
+		rockchip-rk3588)
+			platform=rk3588
 			;;
 	esac
 } # set_platform
